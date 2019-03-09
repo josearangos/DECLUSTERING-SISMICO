@@ -55,16 +55,13 @@ public class ControlerExcel  implements ActionListener {
             vistaE.Mysplash.setVisible(false);
         }
         
-        if(e.getSource() == vistaE.btnExport){
-          
+        if(e.getSource() == vistaE.btnExport){          
             if(selecArchivo.showDialog(null, "Exportar")==JFileChooser.APPROVE_OPTION){
                 vistaE.Mysplash.setVisible(true);
                 archivo=selecArchivo.getSelectedFile();
-                if(archivo.getName().endsWith("xls") || archivo.getName().endsWith("xlsx")){
-                    if (matrizValores !=null) {
-                        
-                    JOptionPane.showMessageDialog(null, modeloE.ExportMatrizToExcel(archivo, matrizValores) + "\n Formato ."+ archivo.getName().substring(archivo.getName().lastIndexOf(".")+1));
-                
+                if(archivo.getName().endsWith("csv") || archivo.getName().endsWith("csv")){
+                    if (matrizValores !=null) {                        
+                    JOptionPane.showMessageDialog(null, modeloE.ExportMatrizToCSV(archivo, matrizValores) + "\n Formato ."+ archivo.getName().substring(archivo.getName().lastIndexOf(".")+1));
                     } else {
                          JOptionPane.showMessageDialog(null,"Antes de exportar debe calcular");
                     }

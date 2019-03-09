@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.*;
+import com.csvreader.CsvWriter;
 
 /**
  *
@@ -23,8 +24,7 @@ public class ModelExcel {
 
     Workbook wb;
     double[][] matrizValores;
-    
-    
+    ArrayList<String> listaFechas= new ArrayList<>();
 
     public String Importar(File archivo, JTable tablaD, JTextField txtPath, JLabel MySplash) {
         
@@ -50,23 +50,28 @@ public class ModelExcel {
                     if (indiceFila == 0) {
                         modeloT.addColumn(celda.getStringCellValue());
                     } else {
-                        if (celda != null) {
-                            switch (celda.getCellType()) {
-                                case Cell.CELL_TYPE_NUMERIC:
-                                    listaColumna[indiceColumna] = (double) (celda.getNumericCellValue());
-                                    break;
-                                case Cell.CELL_TYPE_STRING:
-                                    listaColumna[indiceColumna] = celda.getStringCellValue();
-                                    break;
-                                case Cell.CELL_TYPE_BOOLEAN:
-                                    listaColumna[indiceColumna] = celda.getBooleanCellValue();
-                                    break;
-                                default:
-                                    listaColumna[indiceColumna] = celda.getDateCellValue();
-                                    break;
+                        try {
+                            if (celda != null) {
+                                switch (celda.getCellType()) {
+                                    case Cell.CELL_TYPE_NUMERIC:
+                                        listaColumna[indiceColumna] = (double) (celda.getNumericCellValue());
+                                        break;
+                                    case Cell.CELL_TYPE_STRING:
+                                        listaColumna[indiceColumna] = celda.getStringCellValue();
+                                        break;
+                                    case Cell.CELL_TYPE_BOOLEAN:
+                                        listaColumna[indiceColumna] = celda.getBooleanCellValue();
+                                        break;
+                                    default:
+                                        listaColumna[indiceColumna] = celda.getDateCellValue();
+                                        break;
+                                }
                             }
-                            // System.out.println("col"+indiceColumna+" valor: true - "+celda+".");
+
+                        } catch (Error e) {
+                            System.out.println(e);
                         }
+
                     }
                 }
                 if (indiceFila != 0) {
@@ -79,7 +84,7 @@ public class ModelExcel {
         } catch (IOException | InvalidFormatException | EncryptedDocumentException e) {
             System.err.println(e.getMessage());
         }
-        
+
         return respuesta;
     }
 
@@ -116,26 +121,30 @@ public class ModelExcel {
         return respuesta;
     }
 
-    public double[][] Calcular(File archivo, JTable tablaD){
-        
-        
+    public double[][] Calcular(File archivo, JTable tablaD) {
+
         int numFila = tablaD.getRowCount(), numColumna = tablaD.getColumnCount();
         matrizValores = new double[numFila][numColumna];
-        
-                                 
-            for (int i = -1; i < numFila; i++) {
-                for (int j = 0; j < numColumna; j++) {
-                    if (i != -1) {
-                        matrizValores[i][j] = Double.valueOf(String.valueOf(tablaD.getValueAt(i, j)));
-                    }
 
+        for (int i = -1; i < numFila; i++) {
+            for (int j = 0; j < numColumna; j++) {
+                if (i != -1) {
+                    if(j==numColumna-1){
+                        listaFechas.add(String.valueOf(tablaD.getValueAt(i, j)));
+                    }else{
+                      matrizValores[i][j] = Double.valueOf(String.valueOf(tablaD.getValueAt(i, j)));
+
+                    }
                 }
+
             }
+        }
+        
        
-      
-     
-        for (int i = 0; i < numFila; i++) {     
-            
+
+        
+         for (int i = 0; i < numFila; i++) {
+
             double Mi = matrizValores[i][4];
             double constanted = 0.1238;
             double constante2d = 0.983;
@@ -150,6 +159,7 @@ public class ModelExcel {
             } else {
                 ti = Math.pow(10, ((constantet3 * Mi) - constantet4));
             }
+
             //Calcular la distancia y tiempo con respecto a otros
             double d12 = 0;
             double t12 = 0;
@@ -159,6 +169,7 @@ public class ModelExcel {
                     double x = matrizValores[i][1] - matrizValores[j][1];
                     double y = matrizValores[i][2] - matrizValores[j][2];
                     double z = matrizValores[i][3] - matrizValores[j][3];
+
                     double dtemporal = Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2);
                     d12 = Math.pow(dtemporal, 0.5);
                     double taux = matrizValores[i][5] - matrizValores[j][5];
@@ -166,6 +177,7 @@ public class ModelExcel {
                     //Validar si pongo 1 o 0
                     if (di > d12 && ti > t12 && Mi > matrizValores[j][4]) {
                         matrizValores[j][6] = 1;
+
                     }
 
                 } else {
@@ -186,6 +198,7 @@ public class ModelExcel {
                         //Validar si pongo 1 o 0
                         if (di > d12 && ti > t12 && Mi > matrizValores[k][4]) {
                             matrizValores[k][6] = 1;
+
                         }
 
                     } else {
@@ -195,14 +208,15 @@ public class ModelExcel {
                 }
             }
 
-        }        
-        //lbl.setVisible(false);
+        }
+         
+       //lbl.setVisible(false);
         return matrizValores;
 
     }
 
     public String ExportMatrizToExcel(File archivo, double[][] matrizValores) {
-        String[] header= new String[]{"ID","X","Y","Z","M","T","O"};
+        String[] header = new String[]{"ID", "X", "Y", "Z", "M", "T", "O"};
         String respuesta = "No se realizo con exito la exportación.";
 
         int numFila = matrizValores.length, numColumna = matrizValores[0].length;
@@ -215,28 +229,78 @@ public class ModelExcel {
         Sheet hoja = wb.createSheet("Pruebita");
 
         try {
-            for (int i = -1; i < numFila; i++) {               
-                   Row fila = hoja.createRow(i + 1);                    
-                    for (int j = 0; j < numColumna; j++) {
-                        Cell celda = fila.createCell(j);
-                        if (i == -1) {
-                            celda.setCellValue(header[j]);
-                        } else {
-                            if(matrizValores[i][6]!=1){
-                                    
+            for (int i = -1; i < numFila; i++) {
+                Row fila = hoja.createRow(i + 1);
+                for (int j = 0; j < numColumna; j++) {
+                    Cell celda = fila.createCell(j);
+                    if (i == -1) {
+                        celda.setCellValue(header[j]);
+                    } else {
+                        if (matrizValores[i][6] != 1) {
                             celda.setCellValue(String.valueOf(matrizValores[i][j]));
-                            }
-
                         }
-                        wb.write(new FileOutputStream(archivo));
-                    
-                   }
-               
-                                
+                    }
+                    wb.write(new FileOutputStream(archivo));
+
+                }
+
             }
             respuesta = "Exportación exitosa.";
         } catch (Exception e) {
             System.err.println(e.getMessage());
+        }
+        return respuesta;
+    }
+
+    public String ExportMatrizToCSV(File archivo, double[][] matrizValores) {       
+        
+        String outputFile = archivo.getPath();       
+        
+        boolean alreadyExists = new File(outputFile).exists();
+        String respuesta = "No se realizo con exito la exportación.";        
+        int numFila = matrizValores.length, numColumna = matrizValores[0].length;
+        if (alreadyExists) {
+            File ficheroUsuarios = new File(outputFile);
+            ficheroUsuarios.delete();
+        }
+        try {
+
+            CsvWriter csvOutput = new CsvWriter(new FileWriter(outputFile, true), ',');
+            csvOutput.write("ID");
+            csvOutput.write("X");
+            csvOutput.write("Y");
+            csvOutput.write("Z");
+            csvOutput.write("M");
+            csvOutput.write("T");
+            csvOutput.write("O");
+            csvOutput.write("Fecha");
+            csvOutput.endRecord();
+            try {
+                for (int i = -1; i < numFila; i++) {
+                    for (int j = 0; j < numColumna; j++) {
+                        if (i == -1) {
+                        } else {
+                            if (matrizValores[i][6] != 1) {
+                                if(j==7){
+                                     csvOutput.write(listaFechas.get(i));
+                                }else{
+                                    csvOutput.write(String.valueOf(matrizValores[i][j]));
+                                }
+                                
+                            }
+                        }
+
+                    }
+                    csvOutput.endRecord();
+
+                }
+                csvOutput.close();
+                respuesta = "Exportación exitosa.";
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return respuesta;
     }

@@ -18,8 +18,7 @@ public class ClusteringSismoMain {
         vistaE.Mysplash.setVisible(false);
         ControlerExcel contraControladorExcel = new ControlerExcel(vistaE, modeloE);
         vistaE.setVisible(true);
-        vistaE.setLocationRelativeTo(null);
-        
+        vistaE.setLocationRelativeTo(null);       
                 
 
 
