@@ -49,7 +49,7 @@ public class ControlerExcel  implements ActionListener {
                             modeloE.Importar(archivo, vistaE.jtDatos,vistaE.txtPath, vistaE.Mysplash) + "\n Formato ."+ archivo.getName().substring(archivo.getName().lastIndexOf(".")+1), 
                             "IMPORTAR EXCEL", JOptionPane.INFORMATION_MESSAGE);
                 }else{
-                    JOptionPane.showMessageDialog(null, "Elija un formato valido.");
+                    JOptionPane.showMessageDialog(null, "Elija un formato válido.");
                 }
             }
             vistaE.Mysplash.setVisible(false);
@@ -66,7 +66,7 @@ public class ControlerExcel  implements ActionListener {
                          JOptionPane.showMessageDialog(null,"Antes de exportar debe calcular");
                     }
                     }else{
-                    JOptionPane.showMessageDialog(null, "Elija un formato valido.");
+                    JOptionPane.showMessageDialog(null, "Elija un formato válido.");
                 }
                  vistaE.Mysplash.setVisible(false);
             }
@@ -75,9 +75,9 @@ public class ControlerExcel  implements ActionListener {
             vistaE.Mysplash.setVisible(true);
             matrizValores=modeloE.Calcular(archivo, vistaE.jtDatos);
              if (matrizValores != null) {              
-                JOptionPane.showMessageDialog(null,"Se calculo con exito!");
+                JOptionPane.showMessageDialog(null,"Se calculó con éxito!");
             } else {
-                 JOptionPane.showMessageDialog(null,"Algo Fallo :/");
+                 JOptionPane.showMessageDialog(null,"Algo Falló :/");
             }
             vistaE.Mysplash.setVisible(false);
         }

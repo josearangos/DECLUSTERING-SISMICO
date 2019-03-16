@@ -45,9 +45,9 @@
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="-2" pref="144" max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" pref="382" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="jLabel1" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="lbl" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="Mysplash" min="-2" pref="93" max="-2" attributes="0"/>
@@ -103,7 +103,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Calibri" size="36" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Clustering Datos S&#xed;smicos"/>
+        <Property name="text" type="java.lang.String" value="          Declustering de datos s&#xed;smicos"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
     </Component>

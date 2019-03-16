@@ -90,7 +90,7 @@ public class ModelExcel {
 
     public String Exportar(File archivo, JTable tablaD) {
 
-        String respuesta = "No se realizo con exito la exportación.";
+        String respuesta = "No se realizó con éxito la exportación.";
 
         int numFila = tablaD.getRowCount(), numColumna = tablaD.getColumnCount();
 
@@ -215,7 +215,7 @@ public class ModelExcel {
 
     }
 
-    public String ExportMatrizToExcel(File archivo, double[][] matrizValores) {
+    /*public String ExportMatrizToExcel(File archivo, double[][] matrizValores) {
         String[] header = new String[]{"ID", "X", "Y", "Z", "M", "T", "O"};
         String respuesta = "No se realizo con exito la exportación.";
 
@@ -250,14 +250,14 @@ public class ModelExcel {
             System.err.println(e.getMessage());
         }
         return respuesta;
-    }
+    }*/
 
     public String ExportMatrizToCSV(File archivo, double[][] matrizValores) {       
         
         String outputFile = archivo.getPath();       
         
         boolean alreadyExists = new File(outputFile).exists();
-        String respuesta = "No se realizo con exito la exportación.";        
+        String respuesta = "No se realizó con éxito la exportación.";        
         int numFila = matrizValores.length, numColumna = matrizValores[0].length;
         if (alreadyExists) {
             File ficheroUsuarios = new File(outputFile);
