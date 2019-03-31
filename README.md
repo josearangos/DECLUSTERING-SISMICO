@@ -5,3 +5,11 @@ https://github.com/josearangos/Declustering-s-smico/blob/master/DECLUSTERING%20D
 
 # Catálogo para pruebas
 https://github.com/josearangos/Declustering-s-smico/blob/master/CATALOGO%20PARA%20PRUEBA_EJECUTABLE.xlsx
+
+
+
+# Ejecutable
+https://github.com/josearangos/Declustering-s-smico/blob/master/DeclusteringSismicoEjecutable.zip?raw=true
+
+# Requisitos
+Tener instala JDK_JAVA_EJECUTABLE.exe -> 
